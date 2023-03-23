@@ -1,0 +1,33 @@
+name: reusable-workflow
+on:
+  workflow_call:
+    inputs:
+      commit-sha:
+        required: false
+        type: string
+        description: The commit sha that you want to deploy on codepush
+      throw-error:
+        required: false
+        type: boolean
+        description: Throw error if true
+env:
+  NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  reusable-workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        if: ${{ inputs.commit-sha == ''}}
+        uses: actions/checkout@v2
+
+      - name: Checkout repo with sha
+        if: ${{ inputs.commit-sha != '' }}
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ inputs.commit-sha }}
+
+      - name: Throw error
+        if: ${{ inputs.throw-error == true }}
+        run: exit 1
+

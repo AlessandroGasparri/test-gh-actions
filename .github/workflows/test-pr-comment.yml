@@ -33,20 +33,32 @@ jobs:
       path: ${{ steps.path.outputs.path }}
       commit-sha: ${{ steps.commit-sha.outputs.commit-sha }}
 
+  do-some-actions:
+    needs: set-path
+    uses: ./.github/workflows/reusable-workflow.yml
+    with:
+      commit-sha: ${{ github.event.issue.pull_request.head.sha }}
+      throw-error: false
+    secrets: inherit
+
   test:
     runs-on: ubuntu-latest
-    needs: set-path
+    needs: do-some-actions
+    if: always()
     steps:
       - name: Add rocket reaction
         uses: peter-evans/create-or-update-comment@v2
+        if: success()
         with:
           comment-id: ${{ github.event.comment.id }}
           reactions: rocket
       
       - name: Add thumbs down reaction
         uses: peter-evans/create-or-update-comment@v2
+        if: failure()
         with:
           comment-id: ${{ github.event.comment.id }}
           reactions: -1
-        
+  
+
     
