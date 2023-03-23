@@ -13,7 +13,6 @@ on:
     outputs:
       error:
         description: 'True if error occurred, false otherwise'
-        type: boolean
         value: ${{ jobs.reusable-workflow.outputs.error}}
 env:
   NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
