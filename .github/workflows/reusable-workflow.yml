@@ -10,6 +10,11 @@ on:
         required: false
         type: boolean
         description: Throw error if true
+    outputs:
+      error:
+        description: 'True if error occurred, false otherwise'
+        type: boolean
+        value: ${{ jobs.reusable-workflow.outputs.error}}
 env:
   NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -29,5 +34,9 @@ jobs:
 
       - name: Throw error
         if: ${{ inputs.throw-error == true }}
+        continue-on-error: true
         run: exit 1
+
+      - name: Set job outputs
+        run: echo "error=${{ failure() }}" >> "$GITHUB_ENV"
 
