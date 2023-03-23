@@ -18,11 +18,7 @@ jobs:
         # Extracts path from comment body i.e. @deploy/codepush/mobility => mobility 
         run: echo "path=$(echo "${{ github.event.comment.body }}" | sed -n 's/.*@deploy\/codepush\/\([^ \/]*\).*/\1/p')" >> "$GITHUB_OUTPUT"
 
-      # - name: Display info
-      #   id: info
-      #   run: echo ${{ toJSON(github.event) }}
-
-      - name: Checkout repo
+      - name: Initialize repo
         uses: actions/checkout@v2
 
       - name: Checkout to pr
