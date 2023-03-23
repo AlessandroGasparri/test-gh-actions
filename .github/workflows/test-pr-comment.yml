@@ -4,6 +4,9 @@ on:
   issue_comment:
     types: [ created ]
 
+env:
+  GH_TOKEN: ${{ github.token }}
+
 jobs:
   set-path:
     runs-on: ubuntu-latest
