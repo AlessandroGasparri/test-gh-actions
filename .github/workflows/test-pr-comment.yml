@@ -38,7 +38,7 @@ jobs:
     uses: ./.github/workflows/reusable-workflow.yml
     with:
       commit-sha: ${{ needs.set-path.outputs.commit-sha }}
-      throw-error: false
+      throw-error: true
     secrets: inherit
 
   test:
