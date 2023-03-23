@@ -48,17 +48,17 @@ jobs:
     steps:
       - name: Test
         run: echo "error=${{ needs.do-some-actions.outputs.error }}"
-        
+
       - name: Add rocket reaction
         uses: peter-evans/create-or-update-comment@v2
-        if: ${{ needs.do-some-actions.outputs.error == "false" }}
+        if: ${{ needs.do-some-actions.outputs.error == false }}
         with:
           comment-id: ${{ github.event.comment.id }}
           reactions: rocket
       
       - name: Add thumbs down reaction
         uses: peter-evans/create-or-update-comment@v2
-        if: ${{ needs.do-some-actions.outputs.error == "true" }}
+        if: ${{ needs.do-some-actions.outputs.error == true }}
         with:
           comment-id: ${{ github.event.comment.id }}
           reactions: -1
