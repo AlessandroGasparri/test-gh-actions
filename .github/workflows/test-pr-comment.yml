@@ -1,0 +1,24 @@
+name: test-pr-comment
+
+on:
+  issue_comment:
+    types: [ created ]
+
+jobs:
+  set-path:
+    runs-on: ubuntu-latest
+    # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#issue_comment-on-issues-only-or-pull-requests-only
+    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '@deploy/codepush/') }}
+    steps:
+      - name: Search for path
+        id: path
+        # Extracts path from comment body i.e. @deploy/codepush/mobility => mobility 
+        run: echo "path=$(echo "${{ github.event.comment.body }}" | sed -n 's/.*@deploy\/codepush\/\([^ \/]*\).*/\1/p')" >> "$GITHUB_OUTPUT"
+
+      - name: Display info
+        id: info
+        run: echo ${{ toJSON(github.event) }}
+
+    outputs:
+      path: ${{ steps.path.outputs.path }}
+    
