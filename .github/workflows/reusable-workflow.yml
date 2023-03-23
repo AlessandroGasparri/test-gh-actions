@@ -13,7 +13,7 @@ on:
     outputs:
       error:
         description: 'True if error occurred, false otherwise'
-        value: ${{ jobs.reusable-workflow.outputs.error == true }}
+        value: ${{ jobs.reusable-workflow.outputs.error == 'true' }}
 env:
   NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
