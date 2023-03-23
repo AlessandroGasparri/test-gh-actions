@@ -33,14 +33,13 @@ jobs:
 
       - name: Throw error
         if: ${{ inputs.throw-error == true }}
-        continue-on-error: true
         run: exit 1
 
       - name: Set job outputs
-        if: failure()
+        if: ${{ always() && failure() }}
         run: echo "error=true" >> "$GITHUB_OUTPUT"
 
       - name: Set job outputs
-        if: success()
+        if: ${{ always() && success() }}
         run: echo "error=false" >> "$GITHUB_OUTPUT"
 
