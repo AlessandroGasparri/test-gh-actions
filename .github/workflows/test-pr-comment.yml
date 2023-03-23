@@ -37,7 +37,7 @@ jobs:
     needs: set-path
     uses: ./.github/workflows/reusable-workflow.yml
     with:
-      commit-sha: ${{ github.event.issue.pull_request.head.sha }}
+      commit-sha: ${{ needs.set-path.outputs.commit-sha }}
       throw-error: false
     secrets: inherit
 
