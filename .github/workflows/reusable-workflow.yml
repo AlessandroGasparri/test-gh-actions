@@ -38,5 +38,10 @@ jobs:
         run: exit 1
 
       - name: Set job outputs
-        run: echo "error=${{ failure() }}" >> "$GITHUB_OUTPUT"
+        if: failure()
+        run: echo "error=true" >> "$GITHUB_OUTPUT"
+
+      - name: Set job outputs
+        if: success()
+        run: echo "error=false" >> "$GITHUB_OUTPUT"
 
