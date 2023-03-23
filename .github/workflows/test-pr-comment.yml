@@ -28,37 +28,24 @@ jobs:
       - name: Get branch name
         id: commit-sha
         run: echo "commit-sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      
+      - name: Call reusable workflow
+        uses: ./.github/workflows/reusable-workflow.yml
+        with:
+          commit-sha: ${{ steps.commit-sha.outputs.commit-sha }}
+          throw-error: true
+        secrets: inherit
 
-    outputs:
-      path: ${{ steps.path.outputs.path }}
-      commit-sha: ${{ steps.commit-sha.outputs.commit-sha }}
-
-  do-some-actions:
-    needs: set-path
-    uses: ./.github/workflows/reusable-workflow.yml
-    with:
-      commit-sha: ${{ needs.set-path.outputs.commit-sha }}
-      throw-error: true
-    secrets: inherit
-
-  test:
-    runs-on: ubuntu-latest
-    needs: do-some-actions
-    if: always()
-    steps:
-      - name: Add rocket reaction
+      - name: Reusable good
         uses: peter-evans/create-or-update-comment@v2
         if: success()
         with:
           comment-id: ${{ github.event.comment.id }}
           reactions: rocket
       
-      - name: Add thumbs down reaction
+      - name: Reusable bad
         uses: peter-evans/create-or-update-comment@v2
         if: failure()
         with:
           comment-id: ${{ github.event.comment.id }}
           reactions: -1
-  
-
-    
