@@ -25,6 +25,7 @@ jobs:
       steps:
         - run: |
             echo "Log level: $LEVEL"
+            echo "${{ toJson(github) }}"
             echo "Tags: $TAGS"
             echo "Environment: $ENVIRONMENT"
           env:
